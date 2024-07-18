@@ -1,44 +1,39 @@
 cmake_minimum_required(VERSION 3.10)
-project(MyProject VERSION 1.0 LANGUAGES CXX)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # For clang-tidy.
+set(BUILD_SHARED_LIBS OFF) # We expect external libraries to be linked statically.
+set(CMAKE_CXX_STANDARD 17) # Compile as C++17.
+set(CMAKE_CXX_STANDARD_REQUIRED ON) # Require C++17 support.
 
-# 设置安装前缀
-set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/install)
 
-# 设置 C++ 标准
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_EXTENSIONS OFF)
+project(LEARN_CMAKE 
+        VERSION 1.0 
+        DESCRIPTION "Learn CMake"
+        LANGUAGES C CXX
+)
 
-# 包含头文件目录
-include_directories(${PROJECT_SOURCE_DIR}/include)
+# #####################################################################################################################
+# COMPILER SETUP
+# #####################################################################################################################
 
-# 添加库
-add_library(MyLibrary src/MyLibrary.cpp)
+# Compiler flags.
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Werror -O0 -ggdb ")
+# set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer -fno-optimize-sibling-calls")
+# set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# 添加可执行文件
-add_executable(MyExecutable main.cpp)
+message(STATUS "CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+message(STATUS "CMAKE_CXX_FLAGS_DEBUG: ${CMAKE_CXX_FLAGS_DEBUG}")
+message(STATUS "CMAKE_EXE_LINKER_FLAGS: ${CMAKE_EXE_LINKER_FLAGS}")
+message(STATUS "CMAKE_SHARED_LINKER_FLAGS: ${CMAKE_SHARED_LINKER_FLAGS}")
 
-# 链接库
-target_link_libraries(MyExecutable PRIVATE MyLibrary)
+# Output directory.
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# 添加编译选项
-target_compile_options(MyExecutable PRIVATE -Wall -Wextra -pedantic)
+# Includes.
+set(LEARN_CMAKE_SRC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src/include)
+include_directories(${LEARN_CMAKE_SRC_INCLUDE_DIR})
 
-# 安装规则
-install(TARGETS MyExecutable DESTINATION bin)
-install(TARGETS MyLibrary DESTINATION lib)
-install(FILES include/MyLibrary.hpp DESTINATION include)
+# Add subdirectories.
+add_subdirectory(src)
 
-# 启用测试
-enable_testing()
-
-# 查找 Google Test 库
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
-
-# 添加测试可执行文件
-add_executable(MyTest tests/test_main.cpp)
-target_link_libraries(MyTest PRIVATE MyLibrary GTest::GTest GTest::Main)
-
-# 添加测试
-add_test(NAME MyTest COMMAND MyTest)
