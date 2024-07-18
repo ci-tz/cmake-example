@@ -4,8 +4,8 @@ namespace learn_cmake {
 
 class LibOne {
  public:
-  LibOne();
-  virtual ~LibOne();
+  LibOne() = default;
+  virtual ~LibOne() = default;
 
   void PrintHello();
   void PrintGoodbye();

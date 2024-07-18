@@ -16,7 +16,6 @@ set(LEARN_CMAKE_THIRDPARTY_LIBS
 
 target_link_libraries(
         learn_cmake 
-        PUBLIC
         ${LEARN_CMAKE_LIBS} 
         ${LEARN_CMAKE_THIRDPARTY_LIBS})
 

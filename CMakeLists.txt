@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # For clang-tidy.
 set(BUILD_SHARED_LIBS OFF) # We expect external libraries to be linked statically.
-set(CMAKE_CXX_STANDARD 17) # Compile as C++17.
-set(CMAKE_CXX_STANDARD_REQUIRED ON) # Require C++17 support.
+set(CMAKE_CXX_STANDARD 11) # Compile as C++11.
+set(CMAKE_CXX_STANDARD_REQUIRED ON) # Require C++11 support.
 
 
 project(LEARN_CMAKE 
@@ -14,6 +14,8 @@ project(LEARN_CMAKE
 # #####################################################################################################################
 # COMPILER SETUP
 # #####################################################################################################################
+
+message("Build mode: ${CMAKE_BUILD_TYPE}")
 
 # Compiler flags.
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -Werror -O0 -ggdb ")
@@ -36,4 +38,5 @@ include_directories(${LEARN_CMAKE_SRC_INCLUDE_DIR})
 
 # Add subdirectories.
 add_subdirectory(src)
+add_subdirectory(test)
 
